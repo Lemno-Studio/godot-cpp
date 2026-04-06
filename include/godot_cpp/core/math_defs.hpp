@@ -33,5 +33,5 @@
 #include "./math_defs.h"
 
 namespace godot {
-	using	real_t = godot_real_t;
+	typedef godot_real_t real_t;
 } // namespace godot
