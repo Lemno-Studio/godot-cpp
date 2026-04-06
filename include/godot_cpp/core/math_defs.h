@@ -1,5 +1,4 @@
-#ifndef	godot_cpp_core_math_defs_h
-#define	godot_cpp_core_math_defs_h
+#pragma once
 
 #define CMP_EPSILON 0.00001
 #define CMP_EPSILON2 (CMP_EPSILON * CMP_EPSILON)
@@ -36,9 +35,8 @@
  * presence or absence of the REAL_T_IS_DOUBLE define.
  */
 #ifdef REAL_T_IS_DOUBLE
-typedef double godot_real_t;
+#define	godot_real_t	double
 #else
-typedef float godot_real_t;
+#define	godot_real_t	float
 #endif
 
-#endif

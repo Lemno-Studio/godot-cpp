@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include "./math_defs.h"
+#include <godot_cpp/core/math_defs.h>
 
 namespace godot {
 	typedef godot_real_t real_t;
