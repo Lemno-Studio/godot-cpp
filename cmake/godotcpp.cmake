@@ -366,54 +366,58 @@ function(godotcpp_generate)
 
     file(GLOB_RECURSE GODOTCPP_SOURCES LIST_DIRECTORIES NO CONFIGURE_DEPENDS src/*.cpp)
 
-    target_sources(godot-cpp PRIVATE ${GODOTCPP_SOURCES} ${GENERATED_FILES_LIST})
+	target_sources(godot-cpp PRIVATE ${GODOTCPP_SOURCES} ${GENERATED_FILES_LIST})
 
-    target_include_directories(
-        godot-cpp
-        ${GODOTCPP_SYSTEM_HEADERS_ATTRIBUTE}
-        PUBLIC include ${CMAKE_CURRENT_BINARY_DIR}/gen/include
-    )
+	target_include_directories(
+		godot-cpp
+		${GODOTCPP_SYSTEM_HEADERS_ATTRIBUTE}
+		PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/gen/include>
+		$<INSTALL_INTERFACE:include>
+		$<INSTALL_INTERFACE:gen/include>
+		)
 
-    # gersemi: off
-    set_target_properties(
-        godot-cpp
-        PROPERTIES
-            CXX_STANDARD 17
-            CXX_EXTENSIONS OFF
-            CXX_VISIBILITY_PRESET ${GODOTCPP_SYMBOL_VISIBILITY}
+	# gersemi: off
+	set_target_properties(
+		godot-cpp
+		PROPERTIES
+		CXX_STANDARD 17
+		CXX_EXTENSIONS OFF
+		CXX_VISIBILITY_PRESET ${GODOTCPP_SYMBOL_VISIBILITY}
 
-            COMPILE_WARNING_AS_ERROR ${GODOTCPP_WARNING_AS_ERROR}
-            POSITION_INDEPENDENT_CODE ON
-            BUILD_RPATH_USE_ORIGIN ON
+		COMPILE_WARNING_AS_ERROR ${GODOTCPP_WARNING_AS_ERROR}
+		POSITION_INDEPENDENT_CODE ON
+		BUILD_RPATH_USE_ORIGIN ON
 
-            PREFIX      "lib"
-            OUTPUT_NAME "${PROJECT_NAME}${GODOTCPP_SUFFIX}"
+		PREFIX      "lib"
+		OUTPUT_NAME "${PROJECT_NAME}${GODOTCPP_SUFFIX}"
 
-            ARCHIVE_OUTPUT_DIRECTORY "$<1:${CMAKE_BINARY_DIR}/bin>"
+		ARCHIVE_OUTPUT_DIRECTORY "$<1:${CMAKE_BINARY_DIR}/bin>"
 
-            # Things that are handy to know for dependent targets
-            GODOTCPP_PLATFORM       "${SYSTEM_NAME}"
-            GODOTCPP_TARGET         "${GODOTCPP_TARGET}"
-            GODOTCPP_ARCH           "${ARCH_NAME}"
-            GODOTCPP_PRECISION      "${GODOTCPP_PRECISION}"
-            GODOTCPP_SUFFIX         "${GODOTCPP_SUFFIX}"
-            GODOTCPP_SUFFIX_GENEX   "${GODOTCPP_SUFFIX_GENEX}"
+		# Things that are handy to know for dependent targets
+		GODOTCPP_PLATFORM       "${SYSTEM_NAME}"
+		GODOTCPP_TARGET         "${GODOTCPP_TARGET}"
+		GODOTCPP_ARCH           "${ARCH_NAME}"
+		GODOTCPP_PRECISION      "${GODOTCPP_PRECISION}"
+		GODOTCPP_SUFFIX         "${GODOTCPP_SUFFIX}"
+		GODOTCPP_SUFFIX_GENEX   "${GODOTCPP_SUFFIX_GENEX}"
 
-            # Some IDE's respect this property to logically group targets
-            FOLDER "godot-cpp"
-    )
-    # gersemi: on
-    if(CMAKE_SYSTEM_NAME STREQUAL Android)
-        android_generate()
-    elseif(CMAKE_SYSTEM_NAME STREQUAL iOS)
-        ios_generate()
-    elseif(CMAKE_SYSTEM_NAME STREQUAL Linux)
-        linux_generate()
-    elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
-        macos_generate()
-    elseif(CMAKE_SYSTEM_NAME STREQUAL Emscripten)
-        web_generate()
-    elseif(CMAKE_SYSTEM_NAME STREQUAL Windows)
-        windows_generate()
-    endif()
+		# Some IDE's respect this property to logically group targets
+		FOLDER "godot-cpp"
+		)
+	# gersemi: on
+	if(CMAKE_SYSTEM_NAME STREQUAL Android)
+		android_generate()
+	elseif(CMAKE_SYSTEM_NAME STREQUAL iOS)
+		ios_generate()
+	elseif(CMAKE_SYSTEM_NAME STREQUAL Linux)
+		linux_generate()
+	elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
+		macos_generate()
+	elseif(CMAKE_SYSTEM_NAME STREQUAL Emscripten)
+		web_generate()
+	elseif(CMAKE_SYSTEM_NAME STREQUAL Windows)
+		windows_generate()
+	endif()
 endfunction()
